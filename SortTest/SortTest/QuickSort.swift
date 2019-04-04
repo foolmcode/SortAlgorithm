@@ -12,7 +12,7 @@ class QuickSort {
         quickSort(arr: &arr, left: 0, right: arr.count - 1)
     }
     
-    public static func quickSort<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Void{
+     static func quickSort<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Void{
         if(left >= right){
             return;
         }
@@ -21,7 +21,7 @@ class QuickSort {
         quickSort(arr: &arr, left: p + 1, right: right)
     }
     
-    public static func partition<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Int{
+     static func partition<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Int{
         let v = arr[left]
         var j = left
         //arr[left + 1 , j] < v,arr[j + 1,i] > v

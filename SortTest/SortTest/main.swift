@@ -8,55 +8,52 @@
 
 import Foundation
 
-
-
-func quickSort2<T:Comparable>(arr:inout[T]) ->Void{
-    quickSort2(arr: &arr, left: 0, right: arr.count - 1)
+func quickSort3Ways<T:Comparable>(arr : inout[T]){
+    quickSort3Ways(arr: &arr, left: 0, right: arr.count - 1)
 }
-
-func quickSort2<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Void{
-    if(left >= right){
-        return;
-    }
-    let p = partition2(arr: &arr, left: left, right: right)
-    quickSort2(arr: &arr, left: left, right: p - 1);
-    quickSort2(arr: &arr, left: p + 1, right: right)
-}
-
-func partition2<T:Comparable>(arr:inout[T] , left:Int , right:Int) -> Int{
+//处理arr[left,right]
+func quickSort3Ways<T:Comparable>(arr : inout[T] , left: Int , right:Int){
     let v = arr[left]
-    //[left,i) <= v,(j,right] >= v
-    var i = left + 1 , j = right
-    while true {
-        while i <= right && arr[i] < v {
+    var lt = left // arr[left + 1,lt] < v
+    var gt = right + 1//arr[gt,r] > v
+    var i = left + 1 //arr[lt + 1 ,i) == v
+    
+    
+    while i < gt {
+        if arr[i] < v{
+            arr.swapAt(i, lt + 1)
+            lt += 1
             i += 1
         }
-        while j > left + 1 && arr[j] > v{
-            j -= 1
+        else if arr[i] > v{
+            arr.swapAt(gt - 1, i)
+            gt -= 1
         }
-        
-        if i > j {
-            break
+        else{
+            i += 1
         }
-        arr.swapAt(i, j)
-        i += 1
-        j -= 1
-        
     }
-    arr.swapAt(left, j)
-    return j
+    arr.swapAt(left, lt)
+    if lt - 1 > left{
+        quickSort3Ways(arr: &arr, left: left, right: lt - 1)
+    }
+    if gt < right {
+        quickSort3Ways(arr: &arr, left: gt, right: right)
+    }
+    
 }
-
-let n = 20_000
-var testArr =  SortTestHelper.generateRandomArray(n, 0, 10)
-var testArr2 = testArr
-//print(testArr)
+let n = 10_000
+var testArr =  SortTestHelper.generateRandomArray(n, 0, n)
+//var testArr2 = testArr
+//var testArr3 = testArr
+////print(testArr)
 //SortTestHelper.testSort(sortName: "Merge Sort", sort: MergeSort.mergeSort, arr: &testArr)
+//////SortTestHelper.testSort(sortName: "Insertion Sort", sort:InsertionSort.insertionSort, arr: &testArr2)
+//SortTestHelper.testSort(sortName: "Quick Sort", sort: QuickSort.quickSort, arr: &testArr)
 ////SortTestHelper.testSort(sortName: "Insertion Sort", sort:InsertionSort.insertionSort, arr: &testArr2)
-SortTestHelper.testSort(sortName: "Quick Sort", sort: QuickSort.quickSort, arr: &testArr)
-//SortTestHelper.testSort(sortName: "Insertion Sort", sort:InsertionSort.insertionSort, arr: &testArr2)
-SortTestHelper.testSort(sortName: "Quick Sort 2", sort: quickSort2, arr: &testArr2)
+//SortTestHelper.testSort(sortName: "Quick Sort 2", sort: QuickSort2.quickSort2, arr: &testArr2)
+SortTestHelper.testSort(sortName: "Quick Sort 3", sort: quickSort3Ways, arr: &testArr)
 //print(testArr)
-//mergeSort(arr: &testArr)
+////mergeSort(arr: &testArr)
 
 
